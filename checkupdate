@@ -1,0 +1,39 @@
+#! /bin/bash
+
+##========== URL DEL PROGRAMA A CHEKEAR ACTUALIZACION
+
+url='https://github.com/Jelmerro/Vieb/releases'
+
+
+##========== VERSION INSTALADA ========
+
+tag=$( printf "9.7.1" | sed 's/\.//g')
+
+version="$url/tag/$tag"
+
+
+##========== COMPROBAR SI EXISTE UNA NUEVA VERSION EN GITHUB
+
+## EXTRAER LINK DE LA ULTIMA VERSION DISPONIBLE EN GITHUB Y GUARDAR SALIDA
+
+wget -S $url/latest -o url-redirect.txt
+
+newversion=$(cat url-redirect.txt | grep ^Location: | cut -d ' ' -f2)
+
+## EXTRAER EL NUMERO DE VERSION "TAG" Y CONVERTIRLO SOLO EN NUMEROS
+
+tag2=$(cat url-redirect.txt | grep ^Location: | cut -d ' ' -f2  | cut -d "/" -f 8 | sed 's/\.//g') 
+
+
+##==========COMPARAR LA VERSION INATALADA CON LA ULTIMA VERSION DIAPONIBLE EN GITGUB
+
+
+if [ "$tag" -ge "$tag2" ] ; 
+
+	then
+		echo no exoste nueva version
+	else 
+		echo existe una nueva version
+		echo  ${newversion};
+	fi
+
